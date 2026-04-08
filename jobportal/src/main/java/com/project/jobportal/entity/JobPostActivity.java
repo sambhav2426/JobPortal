@@ -48,7 +48,7 @@ public class JobPostActivity {
     public JobPostActivity() {
     }
 
-    public JobPostActivity(Integer jobPostId, Users postedById, JobLocation jobLocationId, JobCompany jobCompanyId, Boolean isActive, Boolean isSaved, String descriptionOfJob, String jobType, String salary, String remote, Date postDate, String jobTitle) {
+    public JobPostActivity(Integer jobPostId, Users postedById, JobLocation jobLocationId, JobCompany jobCompanyId, Boolean isActive, Boolean isSaved, String descriptionOfJob, String jobType, String salary, String remote, Date postedDate, String jobTitle) {
         this.jobPostId = jobPostId;
         this.postedById = postedById;
         this.jobLocationId = jobLocationId;
@@ -59,7 +59,7 @@ public class JobPostActivity {
         this.jobType = jobType;
         this.salary = salary;
         this.remote = remote;
-        this.postedDate = postDate;
+        this.postedDate = postedDate;
         this.jobTitle = jobTitle;
     }
 
@@ -143,12 +143,12 @@ public class JobPostActivity {
         this.remote = remote;
     }
 
-    public Date getPostDate() {
+    public Date getPostedDate() {
         return postedDate;
     }
 
-    public void setPostDate(Date postDate) {
-        this.postedDate = postDate;
+    public void setPostedDate(Date postedDate) {
+        this.postedDate = postedDate;
     }
 
     public String getJobTitle() {

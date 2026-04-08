@@ -65,7 +65,7 @@ public class JobPostActivityController {
         if(user!=null) {
             jobPostActivity.setPostedById(user);
         }
-        jobPostActivity.setPostDate(new Date());
+        jobPostActivity.setPostedDate(new Date());
         model.addAttribute("jobPostActivity", jobPostActivity);
         JobPostActivity saved = jobPostActivityService.addNew(jobPostActivity);
         return "redirect:/dashboard";
