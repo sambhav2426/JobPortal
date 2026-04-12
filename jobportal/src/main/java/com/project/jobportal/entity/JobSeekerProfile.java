@@ -27,6 +27,7 @@ public class JobSeekerProfile {
     private  String resume;
     @Column(nullable = true, length = 64)
     private String  profilePhoto;
+
     @OneToMany(targetEntity = Skills.class, cascade = CascadeType.ALL, mappedBy = "jobSeekerProfile")
     private List<Skills> skills;
 
@@ -37,7 +38,7 @@ public class JobSeekerProfile {
         this.userId = user;
     }
 
-    public JobSeekerProfile(int userAccountId) {
+    public JobSeekerProfile(Integer userAccountId) {
         this.userAccountId = userAccountId;
     }
 
@@ -152,9 +153,10 @@ public class JobSeekerProfile {
         this.skills = skills;
     }
 
+    @Transient
     public String getPhotosImagePath() {
         if(profilePhoto == null || userAccountId == null) return null;
-        return "/photos/candidate/" + userAccountId + "/" + profilePhoto;
+        return "photos/candidate/" + userAccountId + "/" + profilePhoto;
     }
 
     @Override
