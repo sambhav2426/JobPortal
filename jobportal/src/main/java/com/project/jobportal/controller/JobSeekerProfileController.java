@@ -30,9 +30,9 @@ import java.util.Optional;
 @RequestMapping("/job-seeker-profile")
 public class JobSeekerProfileController {
 
-    private JobSeekerProfileService jobSeekeProfileService;
+    private final JobSeekerProfileService jobSeekeProfileService;
 
-    private UsersRepository usersRepository;
+    private final UsersRepository usersRepository;
 
     @Autowired
     public JobSeekerProfileController(JobSeekerProfileService jobSeekeProfileService, UsersRepository usersRepository) {
@@ -104,6 +104,6 @@ public class JobSeekerProfileController {
         } catch(IOException ex) {
             throw new RuntimeException(ex);
         }
-        return "redirect:/dashboard";
+        return "redirect:/dashboard/";
     }
 }

@@ -73,6 +73,6 @@ public class RecruiterProfileController {
             e.printStackTrace();
         }
 
-        return "redirect:/dashboard";
+        return "redirect:/dashboard/";
     }
 }

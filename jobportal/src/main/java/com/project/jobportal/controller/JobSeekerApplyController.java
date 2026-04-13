@@ -64,6 +64,6 @@ public class JobSeekerApplyController {
             }
             jobSeekerApplyService.addNew(jobSeekerApply);
         }
-        return  "redirect:/dashboard";
+        return  "redirect:/dashboard/";
     }
 }
