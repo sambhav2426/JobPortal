@@ -104,6 +104,6 @@ public class JobSeekerProfileController {
         } catch(IOException ex) {
             throw new RuntimeException(ex);
         }
-        return "redirect:/dashboard/";
+        return "redirect:/dashboard";
     }
 }
