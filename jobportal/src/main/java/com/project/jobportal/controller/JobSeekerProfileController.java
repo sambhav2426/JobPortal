@@ -4,7 +4,7 @@ import com.project.jobportal.entity.JobSeekerProfile;
 import com.project.jobportal.entity.Skills;
 import com.project.jobportal.entity.Users;
 import com.project.jobportal.repository.UsersRepository;
-import com.project.jobportal.services.JobSeekeProfileService;
+import com.project.jobportal.services.JobSeekerProfileService;
 import com.project.jobportal.utils.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -30,12 +30,12 @@ import java.util.Optional;
 @RequestMapping("/job-seeker-profile")
 public class JobSeekerProfileController {
 
-    private JobSeekeProfileService jobSeekeProfileService;
+    private JobSeekerProfileService jobSeekeProfileService;
 
     private UsersRepository usersRepository;
 
     @Autowired
-    public JobSeekerProfileController(JobSeekeProfileService jobSeekeProfileService, UsersRepository usersRepository) {
+    public JobSeekerProfileController(JobSeekerProfileService jobSeekeProfileService, UsersRepository usersRepository) {
         this.jobSeekeProfileService = jobSeekeProfileService;
         this.usersRepository = usersRepository;
     }

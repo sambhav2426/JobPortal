@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class JobSeekeProfileService {
+public class JobSeekerProfileService {
 
     private final JobSeekerProfileRepository jobSeekerProfileRepository;
 
-    public JobSeekeProfileService(JobSeekerProfileRepository jobSeekerProfileRepository) {
+    public JobSeekerProfileService(JobSeekerProfileRepository jobSeekerProfileRepository) {
         this.jobSeekerProfileRepository = jobSeekerProfileRepository;
     }
 

@@ -3,6 +3,7 @@ package com.project.jobportal.controller;
 import com.project.jobportal.entity.*;
 import com.project.jobportal.services.JobPostActivityService;
 import com.project.jobportal.services.JobSeekerApplyService;
+import com.project.jobportal.services.JobSeekerSaveService;
 import com.project.jobportal.services.UsersService;
 import org.apache.catalina.User;
 import org.jspecify.annotations.Nullable;
@@ -30,12 +31,14 @@ public class JobPostActivityController {
     private final UsersService usersService;
     private final JobPostActivityService jobPostActivityService;
     private final JobSeekerApplyService jobSeekerApplyService;
+    private final JobSeekerSaveService jobSeekerSaveService;
 
     @Autowired
-    public JobPostActivityController(UsersService usersService, JobPostActivityService jobPostActivityService, JobSeekerApplyService jobSeekerApplyService) {
+    public JobPostActivityController(UsersService usersService, JobPostActivityService jobPostActivityService, JobSeekerApplyService jobSeekerApplyService, JobSeekerSaveService jobSeekerSaveService) {
         this.usersService = usersService;
         this.jobPostActivityService = jobPostActivityService;
         this.jobSeekerApplyService = jobSeekerApplyService;
+        this.jobSeekerSaveService = jobSeekerSaveService;
     }
 
     @GetMapping("/dashboard")
@@ -54,11 +57,11 @@ public class JobPostActivityController {
                              ) {
         model.addAttribute("partTime", Objects.equals(partTime, "Part-Time"));
         model.addAttribute("fullTime", Objects.equals(fullTime, "Full-Time"));
-        model.addAttribute("freelance", Objects.equals(fullTime, "Freelance"));
+        model.addAttribute("freelance", Objects.equals(freelance, "Freelance"));
 
-        model.addAttribute("remoteOnly", Objects.equals(fullTime, "Remote-Only"));
-        model.addAttribute("officeOnly", Objects.equals(fullTime, "Office-Only"));
-        model.addAttribute("partialRemote", Objects.equals(fullTime, "PartialRemote"));
+        model.addAttribute("remoteOnly", Objects.equals(remoteOnly, "Remote-Only"));
+        model.addAttribute("officeOnly", Objects.equals(officeOnly, "Office-Only"));
+        model.addAttribute("partialRemote", Objects.equals(partialRemote, "Partial-Remote"));
 
         model.addAttribute("today", today);
         model.addAttribute("days7", days7);
@@ -77,6 +80,8 @@ public class JobPostActivityController {
             searchDate = LocalDate.now().minusDays(30);
         } else if(days7) {
             searchDate = LocalDate.now().minusDays(7);
+        } else if (today) {
+            searchDate = LocalDate.now();
         } else {
             dateSearchFlag = false;
         }
@@ -92,7 +97,7 @@ public class JobPostActivityController {
             partialRemote = "Partial-Remote";
             type = false;
         }
-        if(!dateSearchFlag && !remote && !StringUtils.hasText(job) && !StringUtils.hasText(location)) {
+        if(!dateSearchFlag && !remote && !type && !StringUtils.hasText(job) && !StringUtils.hasText(location)) {
            jobPost = jobPostActivityService.getAll();
         } else {
             jobPost = jobPostActivityService.search(job, location, Arrays.asList(partTime, fullTime, freelance),
@@ -110,6 +115,39 @@ public class JobPostActivityController {
                 model.addAttribute("jobPost", recruiterJobs);
             } else {
                 List<JobSeekerApply> jobSeekerApplyList = jobSeekerApplyService.getCandidatesJobs((JobSeekerProfile) currentUserProfile);
+                List<JobSeekerSave> jobSeekerSaveList = jobSeekerSaveService.getCandidatesJob((JobSeekerProfile) currentUserProfile);
+
+                boolean exist;
+                boolean saved;
+
+                for(JobPostActivity jobActivity: jobPost) {
+                    exist = false;
+                    saved = false;
+                    for(JobSeekerApply jobSeekerApply: jobSeekerApplyList) {
+                        if(Objects.equals(jobActivity.getJobPostId(), jobSeekerApply.getJob().getJobPostId())) {
+                            jobActivity.setIsActive(true);
+                            exist = true;
+                            break;
+                        }
+                    }
+
+                    for(JobSeekerSave jobSeekerSave: jobSeekerSaveList) {
+                        if(Objects.equals(jobActivity.getJobPostId(), jobSeekerSave.getJob().getJobPostId())) {
+                            jobActivity.setIsSaved(true);
+                            saved = true;
+                            break;
+                        }
+                    }
+
+                    if (!exist) {
+                        jobActivity.setIsActive(false);
+                    }
+                    if (!saved) {
+                        jobActivity.setIsSaved(false);
+                    }
+
+                    model.addAttribute("jobPost", jobPost);
+                }
             }
         }
         model.addAttribute("user", currentUserProfile);
